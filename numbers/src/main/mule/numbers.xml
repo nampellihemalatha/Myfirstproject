@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ad79cbe5-d9f8-4a15-8d23-3dd270ebc60b" basePath="calculate">
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+
+	<flow name="calculate_numbersFlow" doc:id="9156c5cb-9330-4418-9d2c-b6afba2b5405">
+		<http:listener doc:name="Listener" doc:id="5cfac5b3-d0a1-402f-bbb0-a60dece6d4d0" config-ref="HTTP_Listener_config" path="main"/>
+		<logger level="INFO" doc:name="Entry Logger" doc:id="20578238-ad7b-4380-8fb6-5e4c22267842" message="The flow is started and the payload is #[payload]"/>
+
+		<!-- Set Variables -->
+		<set-variable doc:name="Set Variable num1" doc:id="b12d0c1c-1511-4664-8607-0a1785c37d17" variableName="num1" value="#[attributes.queryParams.num1 as Number default 0]"/>
+		<set-variable doc:name="Set Variable num2" doc:id="923f19a2-36ff-448a-8d57-07f9fa2ed941" variableName="num2" value="#[attributes.queryParams.num2 as Number default 0]"/>
+
+		<!-- Choice Router -->
+		<ee:transform doc:name="Transform Message" doc:id="20f66aaf-3e7e-4f0d-9c3f-fce1e819aa78" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var n1=vars.num1 as Number
+var n2=vars.num2 as Number---
+{
+num1:n1,
+num2:n2,
+operation:if(n1<n2)"addition"else"subtraction"
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="72f50058-d704-414f-b8d6-07138ef0b7ac">
+			<when expression='#[payload.operation == "addition"]'>
+				<ee:transform doc:name="Transform Message" doc:id="30150d6b-a0d0-4c77-9573-28f7c7dcc449" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  operation: "addition",
+  num1: payload.num1,
+  num2: payload.num2,
+  result: payload.num1 + payload.num2
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Transform Message" doc:id="c6951be7-1196-4a32-ad9a-22fdc517ea7e" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  operation: "subtraction",
+  num1: payload.num1,
+  num2: payload.num2,
+  result: payload.num1 - payload.num2
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+
+			</otherwise>
+		
+</choice>
+
+		<!-- Logger for Output -->
+		<logger level="INFO" doc:name="Exit Logger" doc:id="b3e6e9c2-85a5-48ec-b34f-98def8174924" message="Result: #[payload]"/>
+	</flow>
+</mule>
