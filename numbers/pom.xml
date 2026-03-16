@@ -39,6 +39,7 @@
                         <applicationName>${appname}</applicationName>
                         <businessGroupId>${business}</businessGroupId>
 						<target>${target}</target>
+						<provider>MC</provider>
                         <replicas>${replicas}</replicas>
                         <vCores>${vCores}</vCores>
                     </cloudhub2Deployment>
