@@ -37,7 +37,7 @@
                         <password>${anypoint.password}</password>
                         <environment>${env}</environment>
                         <applicationName>${appname}</applicationName>
-                        <businessGroup>${business}</businessGroup>
+                        <businessGroupId>${business}</businessGroupId>
                         <replicas>${replicas}</replicas>
                         <vCores>${vCores}</vCores>
                         <objectStoreV2>true</objectStoreV2>
