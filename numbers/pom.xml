@@ -38,9 +38,12 @@
                         <environment>${env}</environment>
                         <applicationName>${appname}</applicationName>
                         <businessGroupId>${business}</businessGroupId>
+						<target>${target}</target>
+						<provider>MC</provider>
                         <replicas>${replicas}</replicas>
                         <vCores>${vCores}</vCores>
-                        <objectStoreV2>true</objectStoreV2>
+						<releaseChannel>Edge</releaseChannel>
+						<javaVersion>17</javaVersion>
                     </cloudhub2Deployment>
                 </configuration>
 			</plugin>
