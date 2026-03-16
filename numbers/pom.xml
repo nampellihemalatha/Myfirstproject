@@ -38,6 +38,7 @@
                         <environment>${env}</environment>
                         <applicationName>${appname}</applicationName>
                         <businessGroupId>${business}</businessGroupId>
+						<target>${target}</target>
                         <replicas>${replicas}</replicas>
                         <vCores>${vCores}</vCores>
                     </cloudhub2Deployment>
