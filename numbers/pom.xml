@@ -42,6 +42,8 @@
 						<provider>MC</provider>
                         <replicas>${replicas}</replicas>
                         <vCores>${vCores}</vCores>
+						<releaseChannel>Edge</releaseChannel>
+						<javaVersion>17</javaVersion>
                     </cloudhub2Deployment>
                 </configuration>
 			</plugin>
