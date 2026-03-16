@@ -37,9 +37,9 @@
                         <password>${anypoint.password}</password>
                         <environment>${env}</environment>
                         <applicationName>${appname}</applicationName>
-                        <businessGroup>${business}</businessGroup>
-                        <workerType>${vCore}</workerType>
-                        <workers>${workers}</workers>
+                        <businessGroupId>${business}</businessGroupId>
+                        <replicas>${replicas}</replicas>
+                        <vCores>${vCores}</vCores>
                         <objectStoreV2>true</objectStoreV2>
                     </cloudHub2Deployment>
                 </configuration>
